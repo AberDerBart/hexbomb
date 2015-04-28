@@ -1,0 +1,51 @@
+HBP (HexBombProtocol)
+
+All messages are NULL-terminated.
+
+When all controllers and displays have connected, the server sends each player his ID as
+ASCII-string:
+
+[ID]
+
+Controllers can send the following commands to the server:
+
+[ID],m,[DIR]
+	tells the server to move in direction [DIR] (see below)
+[ID],b
+	tells the server to place a bomb
+[ID],r
+
+The server sends the following messages to the displays:
+
+Initialization:
+
+p,[amount]
+	when the display connects, the server sends the amount of players
+s,[height],[width]
+	then, the server sends the map size [height],[width]
+m,[TERRAIN],[TERRAIN],...
+	then, the server sends the map terrain columnwise
+[ID],l,[x],[y]
+[ID],d
+	afterwards, the server sends the location as coordinates [x],[y] of each player, identified by [ID]
+	if a player is dead, [ID],d is sent
+
+In-Game:
+
+[ID],m,[DIR]
+	when the player with the id [ID] moves in direction [DIR] (see below)
+[ID],b
+	when the player with the id [ID] places a bomb
+[ID],x,[x],[y]
+	when a bomb of the player with the id [ID] explodes at coordinates ([x],[y])
+[ID],d
+	when the player with the id [ID] dies
+
+possible values for dir are:
+	0 move upwards
+	1 move up and right
+	2 move down and right
+	3 move down
+	4 move down and left
+	5 move up and left
+	-1 stand still
